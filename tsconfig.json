@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "module": "commonjs",                     /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
-    "lib": ["es6", "dom"],                             /* Specify library files to be included in the compilation. */
+    "lib": ["es6", "dom", "esnext.asynciterable"],                             /* Specify library files to be included in the compilation. */
     "declaration": true,                   /* Generates corresponding '.d.ts' file. */
     "sourceMap": true,                     /* Generates corresponding '.map' file. */
     "removeComments": true,                /* Do not emit comments to output. */

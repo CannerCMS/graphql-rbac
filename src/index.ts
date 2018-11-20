@@ -2,17 +2,15 @@ import { reduce } from 'lodash';
 import { IMiddlewareGenerator } from 'graphql-middleware';
 import { IRule, or, rule, shield } from 'graphql-shield';
 
-declare class IRBAC {
-  constructor({
-    roles,
-    schema,
-    getUser
-  }: {
-    roles: string[],
-    schema: ISchema,
-    getUser: IGetUserFunc
-  })
+type IGetUserFunc = (ctx?: any) => IUser | Promise<IUser>;
 
+interface IRBACArgs {
+  roles: string[];
+  schema: ISchema;
+  getUser: IGetUserFunc;
+}
+
+interface IRBAC {
   middleware(): IMiddlewareGenerator<TSource, TContext, TArgs>;
   context(): IContext;
 }
@@ -29,8 +27,6 @@ interface IContext {
   user: IGetUserFunc;
 }
 
-type IGetUserFunc = (ctx) => IUser | Promise<IUser>;
-
 interface IUser {
   role: string;
 }
@@ -43,18 +39,14 @@ export class RBAC implements IRBAC {
   constructor({
     roles,
     schema,
-    getUser
-  }: {
-    roles: string[],
-    schema: ISchema,
-    getUser: IGetUserFunc
-  }) {
+    getUser,
+  }: IRBACArgs) {
     this.roles = roles;
     this.schema = schema;
     this.getUser = getUser;
   }
 
-  middleware(): IMiddlewareGenerator<TSource, TContext, TArgs> {
+  public middleware(): IMiddlewareGenerator<TSource, TContext, TArgs> {
     // roleRuleMap
     // {
     //   [role: string]: IRule
@@ -64,10 +56,10 @@ export class RBAC implements IRBAC {
       (result, role) => {
         result[role] = rule()(async (parent, args, ctx, info) => {
           return ctx.user.role === role;
-        })
+        });
         return result;
       },
-      {}
+      {},
     );
 
     // shieldPermissions
@@ -81,13 +73,13 @@ export class RBAC implements IRBAC {
     for (const queryType of Object.keys(this.schema)) {
       if (Array.isArray(this.schema[queryType])) {
         const ruleFuncs: IRule[] = (this.schema[queryType] as string[])
-          .map((role) => roleRuleMap[role]);
+          .map(role => roleRuleMap[role]);
         shieldPermissions[queryType] = or(...ruleFuncs);
       } else {
         shieldPermissions[queryType] = {};
         for (const fieldName of Object.keys(this.schema[queryType])) {
           const ruleFuncs: IRule[] = this.schema[queryType][fieldName]
-            .map((role) => roleRuleMap[role]);
+            .map(role => roleRuleMap[role]);
           shieldPermissions[queryType][fieldName] = or(...ruleFuncs);
         }
       }
@@ -96,9 +88,9 @@ export class RBAC implements IRBAC {
     return shield(shieldPermissions);
   }
 
-  context(): IContext {
+  public context(): IContext {
     return {
-      user: this.getUser
+      user: this.getUser,
     };
   }
 }

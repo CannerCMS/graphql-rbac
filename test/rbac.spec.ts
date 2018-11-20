@@ -1,13 +1,14 @@
+/* tslint:disable:no-unused-expression */
 import * as chai from 'chai';
 import { graphql } from 'graphql';
-import { applyMiddleware } from 'graphql-middleware'
-import { makeExecutableSchema } from 'graphql-tools'
+import { applyMiddleware } from 'graphql-middleware';
+import { makeExecutableSchema } from 'graphql-tools';
 import { RBAC } from '../src/index';
 
 const expect = chai.expect;
 
-describe('GraphQL RBAC Query', function() {
-  it('access fieldName by ADMIN', async() => {
+describe('GraphQL RBAC Query', () => {
+  it('access fieldName by ADMIN', async () => {
     const typeDefs = `
       type Query {
         test: String!
@@ -26,8 +27,8 @@ describe('GraphQL RBAC Query', function() {
     const roles = ['ADMIN', 'DEVELOPER'];
     const roleSchema = {
       Query: {
-        test: ['ADMIN']
-      }
+        test: ['ADMIN'],
+      },
     };
     const getUser = () => ({ role: 'ADMIN' });
 
@@ -43,11 +44,11 @@ describe('GraphQL RBAC Query', function() {
     const res = await graphql(schemaWithPermissions, query, {}, { user: { role: 'ADMIN' } });
 
     expect(res.data).to.be.eql({
-      test: 'pass'
+      test: 'pass',
     });
   });
 
-  it('access fieldName by multiple role', async() => {
+  it('access fieldName by multiple role', async () => {
     const typeDefs = `
       type Query {
         test: String!
@@ -66,8 +67,8 @@ describe('GraphQL RBAC Query', function() {
     const roles = ['ADMIN', 'DEVELOPER'];
     const roleSchema = {
       Query: {
-        test: ['ADMIN', 'DEVELOPER']
-      }
+        test: ['ADMIN', 'DEVELOPER'],
+      },
     };
     const getUser = () => ({ role: 'ADMIN' });
 
@@ -84,14 +85,14 @@ describe('GraphQL RBAC Query', function() {
     const developerRes = await graphql(schemaWithPermissions, query, {}, { user: { role: 'DEVELOPER' } });
 
     expect(adminRes.data).to.be.eql({
-      test: 'pass'
+      test: 'pass',
     });
     expect(developerRes.data).to.be.eql({
-      test: 'pass'
+      test: 'pass',
     });
   });
 
-  it('deny fieldName for DEVELOPER', async() => {
+  it('deny fieldName for DEVELOPER', async () => {
     const typeDefs = `
       type Query {
         test: String!
@@ -110,8 +111,8 @@ describe('GraphQL RBAC Query', function() {
     const roles = ['ADMIN', 'DEVELOPER'];
     const roleSchema = {
       Query: {
-        test: ['ADMIN']
-      }
+        test: ['ADMIN'],
+      },
     };
     const getUser = () => ({ role: 'ADMIN' });
 
@@ -131,8 +132,8 @@ describe('GraphQL RBAC Query', function() {
   });
 });
 
-describe('GraphQL RBAC Mutation', function() {
-  it('access fieldName by ADMIN', async() => {
+describe('GraphQL RBAC Mutation', () => {
+  it('access fieldName by ADMIN', async () => {
     const typeDefs = `
       type Query {
         test: String!
@@ -155,8 +156,8 @@ describe('GraphQL RBAC Mutation', function() {
     const roles = ['ADMIN', 'DEVELOPER'];
     const roleSchema = {
       Mutation: {
-        test: ['ADMIN']
-      }
+        test: ['ADMIN'],
+      },
     };
     const getUser = () => ({ role: 'ADMIN' });
 
@@ -172,11 +173,11 @@ describe('GraphQL RBAC Mutation', function() {
     const res = await graphql(schemaWithPermissions, mutation, {}, { user: { role: 'ADMIN' } });
 
     expect(res.data).to.be.eql({
-      test: 'pass'
+      test: 'pass',
     });
   });
 
-  it('access fieldName by multiple role', async() => {
+  it('access fieldName by multiple role', async () => {
     const typeDefs = `
       type Query {
         test: String!
@@ -198,8 +199,8 @@ describe('GraphQL RBAC Mutation', function() {
     const roles = ['ADMIN', 'DEVELOPER'];
     const roleSchema = {
       Mutation: {
-        test: ['ADMIN', 'DEVELOPER']
-      }
+        test: ['ADMIN', 'DEVELOPER'],
+      },
     };
     const getUser = () => ({ role: 'ADMIN' });
 
@@ -216,14 +217,14 @@ describe('GraphQL RBAC Mutation', function() {
     const developerRes = await graphql(schemaWithPermissions, mutation, {}, { user: { role: 'DEVELOPER' } });
 
     expect(adminRes.data).to.be.eql({
-      test: 'pass'
+      test: 'pass',
     });
     expect(developerRes.data).to.be.eql({
-      test: 'pass'
+      test: 'pass',
     });
   });
 
-  it('deny fieldName for DEVELOPER', async() => {
+  it('deny fieldName for DEVELOPER', async () => {
     const typeDefs = `
       type Query {
         test: String!
@@ -246,8 +247,8 @@ describe('GraphQL RBAC Mutation', function() {
     const roles = ['ADMIN', 'DEVELOPER'];
     const roleSchema = {
       Mutation: {
-        test: ['ADMIN']
-      }
+        test: ['ADMIN'],
+      },
     };
     const getUser = () => ({ role: 'ADMIN' });
 
@@ -265,10 +266,10 @@ describe('GraphQL RBAC Mutation', function() {
     expect(res.data).to.be.null;
     expect(res.errors).to.not.be.null;
   });
-})
+});
 
-describe('GraphQL RBAC Return Type', function() {
-  it('access by ADMIN', async() => {
+describe('GraphQL RBAC Return Type', () => {
+  it('access by ADMIN', async () => {
     const typeDefs = `
       type Query {
         test: Obj!
@@ -290,7 +291,7 @@ describe('GraphQL RBAC Return Type', function() {
 
     const roles = ['ADMIN', 'DEVELOPER'];
     const roleSchema = {
-      Obj: ['ADMIN']
+      Obj: ['ADMIN'],
     };
     const getUser = () => ({ role: 'ADMIN' });
 
@@ -308,11 +309,11 @@ describe('GraphQL RBAC Return Type', function() {
     const res = await graphql(schemaWithPermissions, query, {}, { user: { role: 'ADMIN' } });
 
     expect(res.data).to.be.eql({
-      test: { name: 'pass' }
+      test: { name: 'pass' },
     });
   });
 
-  it('access by multiple role', async() => {
+  it('access by multiple role', async () => {
     const typeDefs = `
       type Query {
         test: Obj!
@@ -334,7 +335,7 @@ describe('GraphQL RBAC Return Type', function() {
 
     const roles = ['ADMIN', 'DEVELOPER'];
     const roleSchema = {
-      Obj: ['ADMIN', 'DEVELOPER']
+      Obj: ['ADMIN', 'DEVELOPER'],
     };
     const getUser = () => ({ role: 'ADMIN' });
 
@@ -353,14 +354,14 @@ describe('GraphQL RBAC Return Type', function() {
     const developerRes = await graphql(schemaWithPermissions, query, {}, { user: { role: 'DEVELOPER' } });
 
     expect(adminRes.data).to.be.eql({
-      test: { name: 'pass' }
+      test: { name: 'pass' },
     });
     expect(developerRes.data).to.be.eql({
-      test: { name: 'pass' }
+      test: { name: 'pass' },
     });
   });
 
-  it('deny for DEVELOPER', async() => {
+  it('deny for DEVELOPER', async () => {
     const typeDefs = `
       type Query {
         test: Obj!
@@ -382,7 +383,7 @@ describe('GraphQL RBAC Return Type', function() {
 
     const roles = ['ADMIN', 'DEVELOPER'];
     const roleSchema = {
-      Obj: ['ADMIN']
+      Obj: ['ADMIN'],
     };
     const getUser = () => ({ role: 'ADMIN' });
 
@@ -404,8 +405,8 @@ describe('GraphQL RBAC Return Type', function() {
   });
 });
 
-describe('GraphQL RBAC Return Type column', function() {
-  it('access by ADMIN', async() => {
+describe('GraphQL RBAC Return Type column', () => {
+  it('access by ADMIN', async () => {
     const typeDefs = `
       type Query {
         test: Obj!
@@ -429,8 +430,8 @@ describe('GraphQL RBAC Return Type column', function() {
     const roles = ['ADMIN', 'DEVELOPER'];
     const roleSchema = {
       Obj: {
-        secret: ['ADMIN']
-      }
+        secret: ['ADMIN'],
+      },
     };
     const getUser = () => ({ role: 'ADMIN' });
 
@@ -449,11 +450,11 @@ describe('GraphQL RBAC Return Type column', function() {
     const res = await graphql(schemaWithPermissions, query, {}, { user: { role: 'ADMIN' } });
 
     expect(res.data).to.be.eql({
-      test: { name: 'pass', secret: 'pass' }
+      test: { name: 'pass', secret: 'pass' },
     });
   });
 
-  it('access by multiple role', async() => {
+  it('access by multiple role', async () => {
     const typeDefs = `
       type Query {
         test: Obj!
@@ -477,8 +478,8 @@ describe('GraphQL RBAC Return Type column', function() {
     const roles = ['ADMIN', 'DEVELOPER'];
     const roleSchema = {
       Obj: {
-        secret: ['ADMIN', 'DEVELOPER']
-      }
+        secret: ['ADMIN', 'DEVELOPER'],
+      },
     };
     const getUser = () => ({ role: 'ADMIN' });
 
@@ -498,14 +499,14 @@ describe('GraphQL RBAC Return Type column', function() {
     const developerRes = await graphql(schemaWithPermissions, query, {}, { user: { role: 'DEVELOPER' } });
 
     expect(adminRes.data).to.be.eql({
-      test: { name: 'pass', secret: 'pass' }
+      test: { name: 'pass', secret: 'pass' },
     });
     expect(developerRes.data).to.be.eql({
-      test: { name: 'pass', secret: 'pass' }
+      test: { name: 'pass', secret: 'pass' },
     });
   });
 
-  it('deny for DEVELOPER', async() => {
+  it('deny for DEVELOPER', async () => {
     const typeDefs = `
       type Query {
         test: Obj!
@@ -529,8 +530,8 @@ describe('GraphQL RBAC Return Type column', function() {
     const roles = ['ADMIN', 'DEVELOPER'];
     const roleSchema = {
       Obj: {
-        secret: ['ADMIN']
-      }
+        secret: ['ADMIN'],
+      },
     };
     const getUser = () => ({ role: 'ADMIN' });
 
