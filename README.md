@@ -6,10 +6,15 @@
 
 graphql-rbac provides you a simple way to use Role-based access control in GraphQL. This package integrates with [graphql-shield](https://github.com/maticzav/graphql-shield) which helps you create a permission layer for your application. Using a schema with array of role, graphql-rbac can help you generate rule functions in graphql-shield. So you can easily use RBAC in your application by providing a schema.
 
+## Why graphql-rbac?
+
+* Easy to specify rule permissions for each field in GraphQL.
+* Don't need to write rule function by yourself.
+
 ## Installation
 
 ```bash
-yarn add graphql-shield
+yarn add graphql-rbac
 ```
 
 ## How to use
@@ -21,15 +26,15 @@ const roles = ['ADMIN', 'DEVELOPER']
 
 const schema = {
   Query: {
-    user: ["ADMIN", "DEVELOPER"]
+    user: ['ADMIN', 'DEVELOPER']
   },
   Mutation: {
-    createUser: ["ADMIN", "DEVELOPER"],
-    updateUser: ["ADMIN", "DEVELOPER"],
-    deleteUser: ["ADMIN"]
+    createUser: ['ADMIN', 'DEVELOPER'],
+    updateUser: ['ADMIN', 'DEVELOPER'],
+    deleteUser: ['ADMIN']
   },
   User: {
-    secretKey: ["ADMIN"]
+    secretKey: ['ADMIN']
   }
 }
 
