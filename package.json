@@ -1,6 +1,6 @@
 {
   "name": "graphql-rbac",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "GraphQL RBAC middleware",
   "main": "lib/index.js",
   "module": "./lib/index.js",
