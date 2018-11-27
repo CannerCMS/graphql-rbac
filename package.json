@@ -22,7 +22,7 @@
     "graphql"
   ],
   "author": "",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "devDependencies": {
     "@types/chai": "^4.1.7",
     "@types/graphql": "^14.0.3",
