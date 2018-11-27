@@ -101,3 +101,9 @@ const server = new GraphQLServer({
 ```
 npm run test
 ```
+
+## License
+
+Apache-2.0
+
+![footer banner](https://user-images.githubusercontent.com/26116324/37811196-a437d930-2e93-11e8-97d8-0653ace2a46d.png)
